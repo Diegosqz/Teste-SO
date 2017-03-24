@@ -11,7 +11,6 @@ namespace Thread_Teste_01_SO
     {
         static Thread[] Threads = new Thread[3];
         static AutoResetEvent[] Events = new AutoResetEvent[3];
-        static Form Form1; 
 
         /// <summary>
         /// The main entry point for the application.
@@ -35,8 +34,7 @@ namespace Thread_Teste_01_SO
             {
                 MessageBox.Show("Processo já foi criado!!!");
             }
-            Thread thread = new Thread(Trabalhador);
-            Threads[index] = thread;
+            Threads[index] = new Thread(Trabalhador);
         }
 
         static internal void PararThread(int index)
@@ -48,7 +46,7 @@ namespace Thread_Teste_01_SO
                 return;
             }
 
-            Threads[index].Interrupt();
+            Events[index].Set();
         }
 
         static internal void IniciarThread(int index, Parametros p)
@@ -59,7 +57,7 @@ namespace Thread_Teste_01_SO
                 MessageBox.Show("Processo Já foi iniciado!!!");
                 return;
             }
-
+            p.evento = Events[index];
             Threads[index].Start((object) p);
         }
 
@@ -79,10 +77,17 @@ namespace Thread_Teste_01_SO
         {
             //laço infinito mostrar messagebox cada dois segundos e encerra em reação ao auto reset event setado
             Parametros p = (Parametros)o;
+
             while (true)
             {
-                MessageBox.Show("Thread" + p.index, p.mensagem);
+                if (p.evento.WaitOne(2000))
+                {
+                    MessageBox.Show(p.mensagem, "Thread" + p.index);
+                }
+                
             }
+
+
         }
     }
 
