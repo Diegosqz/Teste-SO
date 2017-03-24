@@ -77,13 +77,11 @@ namespace Thread_Teste_01_SO
         {
             //laço infinito mostrar messagebox cada dois segundos e encerra em reação ao auto reset event setado
             Parametros p = (Parametros)o;
-
-            while (true)
+            bool continuar = false;
+            while (!continuar)
             {
-                if (p.evento.WaitOne(2000))
-                {
-                    MessageBox.Show(p.mensagem, "Thread" + p.index);
-                }
+                MessageBox.Show(p.mensagem, "Thread" + p.index);
+                continuar = p.evento.WaitOne(2000);
                 
             }
 
