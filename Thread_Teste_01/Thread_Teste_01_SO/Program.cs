@@ -81,8 +81,7 @@ namespace Thread_Teste_01_SO
             while (!continuar)
             {
                 MessageBox.Show(p.mensagem, "Thread" + p.index);
-                continuar = p.evento.WaitOne(2000);
-                
+                continuar = p.evento.WaitOne(3000);
             }
 
 
